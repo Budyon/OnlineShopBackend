@@ -8,4 +8,6 @@ const PostSchema = mongoose.Schema({
   authorName: { type: String, required: true },
 });
 
-export const Post =  mongoose.model('Post', PostSchema);
+const Post =  mongoose.model('Post', PostSchema);
+
+export { Post }
