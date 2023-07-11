@@ -7,9 +7,10 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
+      
        await Post.create(req.body)
         res.json({
-            message: 'Post successfully created'
+          message: 'Post successfully created'
         })
     } catch (error) {
         console.log(error)
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
     let result 
     let dtoPosts = []
     let objPosts = {}
-    let posts 
+    let posts
     if(req.query.search) {
       mongoQuery = Post.find({$or:
       [

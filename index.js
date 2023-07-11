@@ -9,6 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/posts', Post)
+
 mongoose.set("strictQuery", false);
 
 mongoose.connect(process.env.MONGOURI, (err) => {
