@@ -2,19 +2,31 @@ import express from 'express'
 import { Post } from '../schemas/post.js'
 import { postDto } from '../dtos/postDto.js'
 import { paginateQuery } from '../util.js';
+import multer from 'multer'
 
 const router = express.Router();
+const upload = multer({ 
+  dest: 'upload/',
+  limits: {
+   fileSize: 1000000,
+  }
+ })
 
-router.post('/', async (req, res) => {
+const type = upload.single('recfile');
+
+router.use(upload.array())
+
+router.post('/', type, async (req, res) => {
     try {
-      
-       await Post.create(req.body)
+      console.log('sdf')
+      console.log(req)
+      //  await Post.create(req.body)
         res.json({
           message: 'Post successfully created'
         })
     } catch (error) {
         console.log(error)
-    }
+      }
 });
 
 router.get('/', async (req, res) => {
