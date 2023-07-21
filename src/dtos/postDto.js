@@ -5,6 +5,7 @@ class postDto {
   unscoped
   description
   authorName
+  image
 
   constructor(post) {
     this.id = post._id
@@ -13,6 +14,7 @@ class postDto {
     this.description = post.description
     this.authorName = post.authorName
     this.unscoped = post.authorName
+    this.image = post.image
   }
 }
   

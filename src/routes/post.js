@@ -5,27 +5,42 @@ import { paginateQuery } from '../util.js';
 import multer from 'multer'
 
 const router = express.Router();
-const upload = multer({ 
-  dest: 'upload/',
-  limits: {
-   fileSize: 1000000,
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads")
+  },
+  filename: function (req, file, cb) {
+    let extArray = file.mimetype.split("/");
+    let extension = extArray[extArray.length - 1];
+    cb(null, file.fieldname + '-' + Date.now()+ '.' + extension)
   }
- })
+})
+multer({ dest: 'uploads/'})
+const upload = multer({ storage : storage })
 
-const type = upload.single('recfile');
-
-router.use(upload.array())
-
-router.post('/', type, async (req, res) => {
-    try {
-      console.log('sdf')
-      console.log(req)
-      //  await Post.create(req.body)
-        res.json({
-          message: 'Post successfully created'
-        })
+router.post('/', upload.single('picture'), async (req, res) => {
+  try {
+       await Post.create({
+        ...req.body,
+        image: req.file ? req.file.filename : null
+      })
+       .then ((item) => {
+        if (item) {
+          res.status(200).json({
+            message: 'Post successfully created'
+          })
+        } else {
+          console.log('error')
+          res.status(404).json({
+            error: 'Post Dont Createdddd'
+          })
+        }
+       });
     } catch (error) {
-        console.log(error)
+      console.log('erre', error);
+        res.status(404).json({
+          message: 'Post Dont Created'
+        })
       }
 });
 
@@ -40,9 +55,9 @@ router.get('/', async (req, res) => {
       [
         { name: req.query.search },
         { scope: req.query.search },
-        { unscoped: req.query.search },
         { description: req.query.search },
-        { authorName: req.query.search }
+        { unscoped: req.query.search },
+        { authorName: req.query.search },
       ]})
         
       posts = await mongoQuery.clone()
@@ -54,7 +69,7 @@ router.get('/', async (req, res) => {
       }
         
         result.forEach((element) => {
-            let post = new postDto(element)
+          let post = new postDto(element)
             dtoPosts.push(post)
         })
 

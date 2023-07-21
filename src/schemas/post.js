@@ -6,6 +6,7 @@ const PostSchema = mongoose.Schema({
   unscoped: { type: String, required: true },
   description: { type: String, required: true },
   authorName: { type: String, required: true },
+  image: { type: String },
 });
 
 const Post =  mongoose.model('Post', PostSchema);
