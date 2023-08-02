@@ -23,7 +23,11 @@ app.use('/posts', Post)
 mongoose.set("strictQuery", false);
 
 mongoose.connect(process.env.MONGOURI, (err) => {
-  if (!err) console.log('MongoDB has connected successfully.');
+  if (!err) {
+    console.log('MongoDB has connected successfully.') 
+  } else {
+    console.log(err)
+  }
 });
 
 app.listen(3001)

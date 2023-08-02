@@ -1,3 +1,4 @@
+import { Timestamp } from 'mongodb';
 import mongoose from 'mongoose'
 
 const PostSchema = mongoose.Schema({
@@ -7,7 +8,8 @@ const PostSchema = mongoose.Schema({
   description: { type: String, required: true },
   authorName: { type: String, required: true },
   image: { type: String },
-});
+  date: { type: String }
+},{ timestamps: true });
 
 const Post =  mongoose.model('Post', PostSchema);
 
